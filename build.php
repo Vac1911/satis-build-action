@@ -12,7 +12,7 @@ removeDir(BUILDER_DIR);
 
 $repos = array_map(fn($pkg) => $config->getPackageRepo($pkg), $config->getPackageList());
 
-execVerbose('composer create-project composer/satis builder --stability=dev --remove-vcs');
+execVerbose('composer create-project composer/satis builder --stability=dev --remove-vcs -n -q');
 
 $satisConfig = [
     "name"         => "qis/repository",
@@ -26,6 +26,8 @@ file_put_contents(BUILDER_DIR . '/satis.json', json_encode($satisConfig));
 execVerbose('php builder/bin/satis build ./builder/satis.json ./dist');
 
 removeDir(BUILDER_DIR);
+
+execVerbose('tar -czf dist.tar.gz dist');
 
 function execVerbose(string $commandLine): void
 {
