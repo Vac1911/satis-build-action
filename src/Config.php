@@ -7,9 +7,6 @@ final class Config
         private string $repositoryHost,
         private string $repositoryOrganization,
         private array $packageList,
-        private string $commitHash,
-        private ?string $branch,
-        private ?string $tag,
         private ?string $userName,
         private ?string $userEmail,
         private string $accessToken
