@@ -10,7 +10,7 @@ removeDir(__DIR__ . '/builder');
 
 $repos = array_map(fn($pkg) => $config->getPackageRepo($pkg), $config->getPackageList());
 
-execNormal('composer create-project composer/satis builder --stability=dev --remove-vcs -n -q');
+execVerbose('composer create-project composer/satis builder --stability=dev --remove-vcs -n');
 
 $satisConfig = [
     "name"         => "qis/repository",
