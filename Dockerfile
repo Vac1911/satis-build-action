@@ -21,5 +21,6 @@ WORKDIR /action
 COPY . .
 
 # see https://nickjanetakis.com/blog/docker-tip-86-always-make-your-entrypoint-scripts-executable
-ENTRYPOINT ["php", "/action/build.php"]
+#ENTRYPOINT ["php", "/action/build.php"]
+ENTRYPOINT ["/bin/sh"]
  

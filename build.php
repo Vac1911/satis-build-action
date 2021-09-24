@@ -4,6 +4,7 @@ require_once __DIR__ . '/src/autoload.php';
 
 
 $config = (new ConfigFactory())->create(getenv());
+$config->setupGitCredentials();
 print_r($config);
 
 removeDir(__DIR__ . '/builder');
@@ -27,7 +28,7 @@ execNormal('tar -czf dist.tar.gz dist');
 
 execVerbose('gh auth status');
 
-removeDir(__DIR__ . '/builder');
+//removeDir(__DIR__ . '/builder');
 
 function execVerbose(string $commandLine): void
 {
