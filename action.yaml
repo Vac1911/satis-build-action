@@ -1,25 +1,25 @@
  
-# see https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#about-yaml-syntax-for-github-actions
+# see https://docs.github.com/en/actions/creating_actions/metadata_syntax_for_github_actions#about_yaml_syntax_for_github_actions
 
 name: 'Monorepo Split'
 description: 'Split monorepo packages to many repositories'
 author: "Andrew Mellor <andrew@quasars.com>"
 
 inputs:
-    repository-host:
+    repository_host:
         description: 'Host'
         default: 'github.com'
         required: false
-    repository-organization:
+    repository_organization:
         description: 'Remote organization'
         required: true
-    package-list:
+    package_list:
         description: 'JSON list of packages'
         required: true
-    user-email:
+    user_email:
         description: 'Git User Email'
         required: true
-    user-name:
+    user_name:
         description: 'Git User Name'
         required: true
 
@@ -28,11 +28,11 @@ runs:
     image: 'Dockerfile'
     args:
         # "GitHub stores input parameters as environment variables" - important!!!
-        - ${{ inputs.repository-host }} # => INPUT-REPOSITORY-HOST
-        - ${{ inputs.repository-organization }}
-        - ${{ inputs.package-list }}
-        - ${{ inputs.user-email }}
-        - ${{ inputs.user-name }}
+        - ${{ inputs.repository_host }} # => INPUT_REPOSITORY_HOST
+        - ${{ inputs.repository_organization }}
+        - ${{ inputs.package_list }}
+        - ${{ inputs.user_email }}
+        - ${{ inputs.user_name }}
 
 branding:
     icon: maximize-2
