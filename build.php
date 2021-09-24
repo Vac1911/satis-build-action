@@ -16,7 +16,7 @@ execVerbose('composer create-project composer/satis builder --stability=dev --re
 
 $satisConfig = [
     "name"         => "qis/repository",
-    "homepage"     => "https://quasars.com",
+    "homepage"     => "https://packages.quasarwebdev.com/",
     "repositories" => $repos,
     "require-all"  => true
 ];
