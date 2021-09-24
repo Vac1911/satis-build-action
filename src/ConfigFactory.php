@@ -55,16 +55,16 @@ final class ConfigFactory
      */
     private function createFromEnv(array $env, string $accessToken, string $ciPlatform): Config
     {
-        $envPrefix = $ciPlatform === self::GITHUB ? 'INPUT_' : '';
+        $envPrefix = $ciPlatform === self::GITHUB ? 'INPUT-' : '';
 
         return new Config(
-            repositoryHost: $env[$envPrefix . 'REPOSITORY_HOST'] ?? 'github.com',
-            repositoryOrganization: $env[$envPrefix . 'REPOSITORY_ORGANIZATION'] ?? throw new \Exception(
+            repositoryHost: $env[$envPrefix . 'REPOSITORY-HOST'] ?? 'github.com',
+            repositoryOrganization: $env[$envPrefix . 'REPOSITORY-ORGANIZATION'] ?? throw new \Exception(
                 'Repository organization is missing'
             ),
-            packageList: json_decode($env[$envPrefix . 'PACKAGE_LIST']),
-            userName: $env[$envPrefix . 'USER_NAME'] ?? null,
-            userEmail: $env[$envPrefix . 'USER_EMAIL'] ?? null,
+            packageList: json_decode($env[$envPrefix . 'PACKAGE-LIST']),
+            userName: $env[$envPrefix . 'USER-NAME'] ?? null,
+            userEmail: $env[$envPrefix . 'USER-EMAIL'] ?? null,
             accessToken: $accessToken
         );
     }
