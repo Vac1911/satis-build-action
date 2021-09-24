@@ -57,6 +57,8 @@ final class ConfigFactory
     {
         $envPrefix = $ciPlatform === self::GITHUB ? 'INPUT-' : '';
 
+        dd($env);
+
         return new Config(
             repositoryHost: $env[$envPrefix . 'REPOSITORY-HOST'] ?? 'github.com',
             repositoryOrganization: $env[$envPrefix . 'REPOSITORY-ORGANIZATION'] ?? throw new \Exception(
