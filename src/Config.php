@@ -52,5 +52,9 @@ final class Config
         if ($this->getUserEmail()) {
             exec('git config --global user.email ' . $this->getUserEmail());
         }
+
+        exec('composer config -g github-oauth.github.com ' . $this->getAccessToken());
+
+
     }
 }
