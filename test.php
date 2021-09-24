@@ -1,5 +1,5 @@
 <?php
-$auth = json_decode(file_get_contents('/home/andrew/.composer/auth.json'), true);
+$auth = json_decode(file_get_contents('auth.json'), true);
 
 putenv("INPUT_REPOSITORY_HOST=github.com");
 putenv("INPUT_REPOSITORY_ORGANIZATION=QISCT");
