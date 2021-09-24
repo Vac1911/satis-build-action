@@ -29,6 +29,8 @@ removeDir(BUILDER_DIR);
 
 execVerbose('tar -czf dist.tar.gz dist');
 
+execVerbose('gh auth status');
+
 function execVerbose(string $commandLine): void
 {
     note('Running: ' . $commandLine);
