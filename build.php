@@ -4,15 +4,13 @@ require_once __DIR__ . '/src/autoload.php';
 
 
 $config = (new ConfigFactory())->create(getenv());
+print_r($config);
 
-const REPO_DIR = __DIR__ . '/repo';
-const DIST_DIR = __DIR__ . '/dist';
-const BUILDER_DIR = __DIR__ . '/builder';
-removeDir(BUILDER_DIR);
+removeDir(__DIR__ . '/builder');
 
 $repos = array_map(fn($pkg) => $config->getPackageRepo($pkg), $config->getPackageList());
 
-execVerbose('composer create-project composer/satis builder --stability=dev --remove-vcs -n -q');
+execNormal('composer create-project composer/satis builder --stability=dev --remove-vcs -n -q');
 
 $satisConfig = [
     "name"         => "qis/repository",
@@ -21,20 +19,26 @@ $satisConfig = [
     "require-all"  => true
 ];
 
-file_put_contents(BUILDER_DIR . '/satis.json', json_encode($satisConfig));
+file_put_contents('satis.json', json_encode($satisConfig));
 
-execVerbose('php builder/bin/satis build ./builder/satis.json ./dist');
+execVerbose('php builder/bin/satis build satis.json dist');
 
-removeDir(BUILDER_DIR);
-
-execVerbose('tar -czf dist.tar.gz dist');
+execNormal('tar -czf dist.tar.gz dist');
 
 execVerbose('gh auth status');
+
+removeDir(__DIR__ . '/builder');
 
 function execVerbose(string $commandLine): void
 {
     note('Running: ' . $commandLine);
-    exec($commandLine);
+    exec($commandLine, $output);
+    echo implode(PHP_EOL, $output);
+}
+function execNormal(string $commandLine): void
+{
+    note('Running: ' . $commandLine);
+    exec($commandLine, $output, $code);
 }
 
 
