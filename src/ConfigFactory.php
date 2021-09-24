@@ -58,7 +58,6 @@ final class ConfigFactory
         $envPrefix = $ciPlatform === self::GITHUB ? 'INPUT_' : '';
 
         return new Config(
-            packageDirectory: $env[$envPrefix . 'PACKAGE_DIRECTORY'] ?? throw new \Exception('Package directory is missing'),
             repositoryHost: $env[$envPrefix . 'REPOSITORY_HOST'] ?? throw new \Exception('Repository host is missing'),
             repositoryOrganization: $env[$envPrefix . 'REPOSITORY_ORGANIZATION'] ?? throw new \Exception(
                 'Repository organization is missing'

@@ -1,9 +1,10 @@
 <?php declare(strict_types=1);
 
+use JetBrains\PhpStorm\ArrayShape;
+
 final class Config
 {
     public function __construct(
-        private string $packageDirectory,
         private string $repositoryHost,
         private string $repositoryOrganization,
         private array $packageList,
@@ -11,11 +12,6 @@ final class Config
         private ?string $userEmail,
         private string $accessToken
     ) {
-    }
-
-    public function getPackageDirectory(): string
-    {
-        return $this->packageDirectory;
     }
 
     public function getUserName(): ?string
@@ -28,19 +24,9 @@ final class Config
         return $this->userEmail;
     }
 
-    public function getBranch(): ?string
-    {
-        return $this->branch;
-    }
-
     public function getPackageList(): array
     {
         return $this->packageList;
-    }
-
-    public function getCommitHash(): string
-    {
-        return $this->commitHash;
     }
 
     public function getAccessToken(): string
@@ -48,11 +34,7 @@ final class Config
         return $this->accessToken;
     }
 
-    public function getGitRepository(): string
-    {
-        return $this->repositoryHost . '/' . $this->repositoryOrganization . '/' . $this->repositoryName . '.git';
-    }
-
+    #[ArrayShape(['type' => "string", 'url' => "string"])]
     public function getPackageRepo(string $packageName): array
     {
         return [

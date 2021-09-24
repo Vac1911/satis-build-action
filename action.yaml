@@ -6,9 +6,6 @@ description: 'Split monorepo packages to many repositories'
 author: "Andrew Mellor <andrew@quasars.com>"
 
 inputs:
-    package-directory:
-        description: 'Local package directory'
-        required: true
     repository-host:
         description: 'Host'
         default: 'github.com'
@@ -19,10 +16,6 @@ inputs:
     package-list:
         description: 'JSON list of packages'
         required: true
-    branch:
-        description: 'Git branch'
-        default: 'main'
-        required: false
     user-email:
         description: 'Git User Email'
         required: true
@@ -35,12 +28,9 @@ runs:
     image: 'Dockerfile'
     args:
         # "GitHub stores input parameters as environment variables" - important!!!
-        - ${{ inputs.package-directory }} # => INPUT-PACKAGE-DIRECTORY
-        - ${{ inputs.repository-host }}
+        - ${{ inputs.repository-host }} # => INPUT-REPOSITORY-HOST
         - ${{ inputs.repository-organization }}
         - ${{ inputs.package-list }}
-        - ${{ inputs.branch }}
-        - ${{ inputs.tag }}
         - ${{ inputs.user-email }}
         - ${{ inputs.user-name }}
 
