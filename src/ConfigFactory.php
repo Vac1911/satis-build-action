@@ -57,7 +57,7 @@ final class ConfigFactory
     {
         $envPrefix = $ciPlatform === self::GITHUB ? 'INPUT-' : '';
 
-        dd($env);
+        echo json_encode($env);
 
         return new Config(
             repositoryHost: $env[$envPrefix . 'REPOSITORY-HOST'] ?? 'github.com',
