@@ -33,7 +33,10 @@ execVerbose('git clone -- https://' . $config->getAccessToken() . '@'  . $config
 
 chdir('repo');
 
-execNormal('gh release create v0.0.1 ../dist.tar.gz');
+
+exec("gh release delete v1.0", $output);
+
+execNormal('gh release create v1.0 ../dist.tar.gz');
 
 
 function execVerbose(string $commandLine): void
