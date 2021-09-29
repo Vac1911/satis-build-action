@@ -58,6 +58,7 @@ final class ConfigFactory
         $envPrefix = $ciPlatform === self::GITHUB ? 'INPUT_' : '';
 
         return new Config(
+            repositoryName: $env['GITHUB_REPOSITORY'],
             repositoryHost: $env[$envPrefix . 'REPOSITORY_HOST'] ?? 'github.com',
             repositoryOrganization: $env[$envPrefix . 'REPOSITORY_ORGANIZATION'] ?? throw new \Exception(
                 'Repository organization is missing'

@@ -28,7 +28,13 @@ execNormal('tar -czf dist.tar.gz dist');
 
 execVerbose('gh auth status');
 
-//removeDir(__DIR__ . '/builder');
+//execVerbose('gh repo clone ' . $config->getRepositoryName());
+execVerbose('git clone -- https://' . $config->getAccessToken() . '@'  . $config->getRepo() . ' repo');
+
+chdir('repo');
+
+execNormal('gh release create v0.0.1 ../dist.tar.gz');
+
 
 function execVerbose(string $commandLine): void
 {

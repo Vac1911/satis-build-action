@@ -5,6 +5,7 @@ use JetBrains\PhpStorm\ArrayShape;
 final class Config
 {
     public function __construct(
+        private string $repositoryName,
         private string $repositoryHost,
         private string $repositoryOrganization,
         private array $packageList,
@@ -12,6 +13,10 @@ final class Config
         private ?string $userEmail,
         private string $accessToken
     ) {
+    }
+    public function getRepositoryName(): string
+    {
+        return $this->repositoryName;
     }
 
     public function getUserName(): ?string
@@ -43,6 +48,11 @@ final class Config
         ];
     }
 
+    public function getRepo(): string
+    {
+        return $this->repositoryHost . '/' . $this->repositoryName . '.git';
+    }
+
     function setupGitCredentials(): void
     {
         if ($this->getUserName()) {
@@ -52,7 +62,7 @@ final class Config
         if ($this->getUserEmail()) {
             exec('git config --global user.email ' . $this->getUserEmail());
         }
-
+        exec('gh config set prompt disabled');
         exec('composer config -g github-oauth.github.com ' . $this->getAccessToken());
 
 
