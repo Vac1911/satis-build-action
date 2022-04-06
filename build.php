@@ -22,7 +22,7 @@ $satisConfig = [
 
 file_put_contents('satis.json', json_encode($satisConfig));
 
-execVerbose('php builder/bin/satis build satis.json dist');
+execVerbose('php builder/bin/satis build satis.json dist -n');
 
 execNormal('tar -czf dist.tar.gz dist');
 
