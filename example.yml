@@ -1,0 +1,91 @@
+name: "Make Release"
+on:
+    workflow_dispatch:
+        inputs:
+            version_type:
+                description: "Version Type"
+                required: true
+                default: "minor"
+                type: choice
+                options:
+                    - major
+                    - minor
+                    - patch
+
+env:
+    GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+jobs:
+    provide_packages_json:
+        # see json juggling: https://docs.github.com/en/free-pro-team@latest/actions/reference/context-and-expression-syntax-for-github-actions#example-6
+        # see https://stackoverflow.com/a/62953566/1348344
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+
+            # required for matrix of packages set
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 8.0
+                  coverage: none
+
+            - uses: "ramsey/composer-install@v1"
+
+            # get package json list
+            - id: output_data
+              run: echo "::set-output name=matrix::$(vendor/bin/monorepo-builder packages-json)"
+
+            - name: run_monorepo_release
+              run: echo "$(vendor/bin/monorepo-builder release ${{ github.event.inputs.version_type }})"
+
+            - uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  commit_message: "Bumped Package Versions"
+
+        # this step is needed, so the output gets to the next defined job
+        outputs:
+            matrix: ${{ steps.output_data.outputs.matrix }}
+    packages_split:
+        needs: provide_packages_json
+
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                package: ${{fromJson(needs.provide_packages_json.outputs.matrix)}}
+
+        steps:
+            - uses: actions/checkout@v2
+
+            # no tag
+            - uses: "symplify/monorepo-split-github-action@1.1"
+              with:
+                  branch: "main"
+                  # ↓ split "packages/easy-coding-standard" directory
+                  package-directory: "packages/${{ matrix.package }}"
+
+                  # ↓ into https://github.com/qisct/<package-name> repository
+                  split-repository-organization: "QISCT"
+                  split-repository-name: "${{ matrix.package }}"
+
+                  # ↓ the user signed under the split commit
+                  user-name: "qis-ci"
+                  user-email: "andrew@quasars.com"
+    build_dist:
+        needs: [provide_packages_json, packages_split]
+
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+
+        steps:
+            - name: "build_dist"
+              run: echo "Type = ${{ github.event.inputs.version_type }}"
+
+            - uses: "vac1911/satis-build-action@v1.0"
+              with:
+                  package_list: ${{needs.provide_packages_json.outputs.matrix}}
+                  repository_organization: "QISCT"
+                  user_name: "qis-ci"
+                  user_email: "andrew@quasars.com"
