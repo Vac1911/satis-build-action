@@ -11,7 +11,7 @@ removeDir(__DIR__ . '/builder');
 
 $repos = array_map(fn($pkg) => $config->getPackageRepo($pkg), $config->getPackageList());
 
-execVerbose('composer create-project composer/satis builder --stability=dev --remove-vcs -n');
+execVerbose('composer create-project composer/satis builder --stability=stable --remove-vcs -n');
 
 $satisConfig = [
     "name"         => "qis/repository",
@@ -33,10 +33,9 @@ execVerbose('git clone -- https://' . $config->getAccessToken() . '@'  . $config
 
 chdir('repo');
 
+$composerConfig = json_decode(file_get_contents('composer.json'), true);
 
-exec("gh release delete v1.0", $output);
-
-execNormal('gh release create v1.0 ../dist.tar.gz');
+execNormal('gh release create ' . $composerConfig['version'] . ' ../dist.tar.gz');
 
 
 function execVerbose(string $commandLine): void
